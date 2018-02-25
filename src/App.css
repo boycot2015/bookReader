@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 44px;
+  line-height: 44px;
+  color: white;
+}
+.App-header h1{
+  margin: 0;
+  padding: 0;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+.tabbar{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 44px;
+  line-height: 44px;
+  width: 100%;
+  background-color: #222222;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.tabbar a{
+  color: #fff;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.space-carousel {
+  padding: 16px;
+  background: #DEF1E5;
+  overflow: hidden;
+}
+.my-carousel .v-item {
+  height: 36px;
+  line-height: 36px;
+  padding-left: 10px;
+}
+.sub-title {
+  color: #888;
+  font-size: 14px;
+  padding: 30px 0 18px 0;
+}
+.slider-decorator-0{
+  bottom: 20px;
+}
+.slider-decorator-0 span{
+  height: 15px;
+  width: 15px;
+}
