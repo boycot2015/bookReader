@@ -14,7 +14,9 @@ import Top from './components/top';
 
 
 class App extends Component {
- 
+  componentWillMount(){
+    window.hostName = 'http://localhost:3333';    
+  }
   render() {
     return (
       <div className="App">
