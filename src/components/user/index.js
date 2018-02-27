@@ -1,12 +1,14 @@
-import React from 'react'
-class User extends React.Component{
+import React,{Component} from 'react'
+import AnimatedWrapper from "../animate/animate";
+class UserComponent extends Component{
    
     render(){
         return(
-            <div>
+            <div className="page">
                 <h2>我是用户</h2>
             </div>
         )
     }
 }
+const User = AnimatedWrapper(UserComponent);
 export default User;

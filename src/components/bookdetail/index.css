@@ -1,0 +1,9 @@
+.page .top{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+.page .top .left{
+    margin-right: 20px;
+}

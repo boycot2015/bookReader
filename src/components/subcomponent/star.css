@@ -1,0 +1,9 @@
+span.star,span.halfstar{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url('../../images/star.png') no-repeat center;
+}
+span.halfstar{
+    background: url('../../images/halfstar.png') no-repeat center;
+}

@@ -4,13 +4,16 @@
   "private": true,
   "dependencies": {
     "amazeui-react": "^1.2.3",
+    "animated": "^0.2.2",
     "antd-mobile": "^2.1.6",
     "axios": "^0.18.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
-    "react-sticky": "^6.0.1"
+    "react-sticky": "^6.0.1",
+    "react-transition-group": "^2.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

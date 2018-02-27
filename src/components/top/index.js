@@ -1,12 +1,14 @@
-import React from 'react'
-class Top extends React.Component{
+import React,{Component} from 'react'
+import AnimatedWrapper from "../animate/animate";
+class TopComponent extends Component{
    
     render(){
         return(
-            <div>
+            <div className="page">
                 <h2>我是排行</h2>
             </div>
         )
     }
 }
+const Top = AnimatedWrapper(TopComponent);
 export default Top;

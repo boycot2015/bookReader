@@ -1,7 +1,7 @@
-.App {
-  text-align: center;
-}
 
+.App {
+    text-align: center;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -25,6 +25,9 @@
 .App-intro {
   font-size: large;
 }
+
+
+
 .tabbar{
   position: fixed;
   bottom: 0;

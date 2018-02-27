@@ -1,6 +1,9 @@
-import React from 'react'
-import { Carousel,Tabs,Toast} from 'antd-mobile';
+import React,{Component}from 'react'
+import { Carousel} from 'antd-mobile'
+import AnimatedWrapper from "../animate/animate"
+import {Link} from 'react-router-dom'
 import axios from 'axios';
+import {Toast} from 'antd-mobile'
 
 
 import img1 from '../../images/1.e64fa90.jpg';
@@ -10,16 +13,7 @@ import img4 from '../../images/4.1c9651f.jpg';
 import img5 from '../../images/5.5f3df4d.jpg';
 import './index.css';
 
-
-
-const tabs = [
-  { title: '玄幻', sub: '1' },
-  { title: '修真', sub: '2' },
-  { title: '历史', sub: '3' },
-  { title: '游戏', sub: '4' },
-];
-
-class Home extends React.Component{
+class HomeComponent extends Component{
   constructor(){
     super();
     this.state = {
@@ -27,40 +21,44 @@ class Home extends React.Component{
       category:[],
       imgHeight: 176,
       slideIndex: 0,
+      id:'',
+      title:[],
+      isBack:false
     };
     this.get = this.get.bind(this);
   }
-  get(type=1){
-    let url = `${window.hostName}/type?type=${type}`
+  get(){
+    let url = `${window.hostName}/booklist`
     axios.get(url).then((res)=>{
-      this.setState({category:res.data});
+      Toast.loading('Loading...', 0.5, () => {
+        this.setState({category:[
+          res.data.slice(0,8),
+          res.data.slice(8,16),
+          res.data.slice(16,24),
+          res.data.slice(24,32)],
+          title:['热门推荐','排行榜','限时免费','新书抢先'],
+          isBack:true
+          });
+      });     
+        
     }).catch((err)=>{
         console.log(err.status);
     })
   }
-  loadingToast(index) {
-    // console.log(index);
-    this.index = index;
-    Toast.loading('Loading...', 0.5, () => {
-      this.get(this.index+1);
-    });
-  }
+
     componentDidMount() {
-      // simulate img loading
-      
+      // simulate img loading     
         this.setState({
           data: [img1, img2, img3,img4,img5],        
         });
       this.get();
-             
     }
-    render(){
-      
-        return(
-            <div>
+    render(){     
+        return (
+            <div className="page">
                 <Carousel autoplay={true} infinite dots={true} selectedIndex={0} >
                   {this.state.data.map(val => (
-                    <a
+                    <a 
                     key={val}
                     href="http://www.alipay.com"
                     style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}>
@@ -77,29 +75,31 @@ class Home extends React.Component{
                     </a>
                   ))}
                 </Carousel>
-                <Tabs tabs={tabs}
-                  initialPage={0}
-                  renderTab={tab =><div><i></i><span>{tab.title}</span></div>}
-                  onChange={(models,index)=>{  
-                    this.setState({category:[]});                  
-                    this.loadingToast(index);                   
-                  }}
-                >              
-                {this.state.category?
-                <div style={{ display: 'flex', alignItems: 'center',flexWrap:'wrap', justifyContent: 'center', height: '100%', backgroundColor: '#fff' }}>
-                    {this.state.category.map((val,index)=>(
-                      <a key={val.id} style={{float:'left',width:'48%',margin: '0 1%',}}>
-                      <img className="cover" src={val.images} alt=""/>
-                      <p>{val.name}</p>
-                      <p>{val.author}</p>
-                    </a>
-                    ))}                    
-                </div>
-              :null}
-                
-              </Tabs>
+                {this.state.category[0]?
+               <div className="content">
+                  {this.state.title.map((val,index)=>(
+                    <section className="container" key={val}>
+                    <nav>
+                      <h3>{val}</h3>
+                    </nav>                  
+                      <ul className="list" >
+                        {this.state.category[index].map((val,index)=>(
+                          <li key={index}>
+                          <Link to={{pathname:`/booklist/${val.id}`,state:val.id}}>
+                          <img className="cover" src={val.images} alt=""/>
+                          <p>{val.name}</p>
+                          <p>{val.author}</p>
+                          </Link>
+                        </li>
+                        ))}  
+                      </ul>                  
+                  </section>
+                  ))}
+               </div> 
+               :null}
             </div>
         )
     }
 }
+const Home = AnimatedWrapper(HomeComponent);
 export default Home;
