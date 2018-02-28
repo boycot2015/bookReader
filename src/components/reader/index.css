@@ -1,0 +1,128 @@
+
+.page .topBar,.page .bottomBar{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    z-index: 99;
+    height: 44px;
+    background-color: blue;
+    transition: all .5s;
+    transform: translateY(-100%); 
+    color: #f5f5f5;   
+}
+.page .topBar{
+    top: 0;
+    line-height: 44px;    
+}
+.page .bottomBar{
+    transform: translateY(100%);
+    bottom: 0;
+}
+.page .bottomBar span{
+    display: block;
+    font-size: 16px;
+}
+.page .bottomBar .left{
+    float: left;
+    height: 100%;
+    line-height: 100%;
+    padding: 0 20px;
+}
+.page .bottomBar h2{
+    line-height: 44px;
+}
+.page .bottomBar .right{
+    float: right;
+    font-size: 20px;
+    line-height: 44px;
+    padding: 0px 10px;
+}
+.page .topBar.active,.page .bottomBar.active{
+    transform: translateY(0%); 
+}
+.page .topBar span{
+    float: left;
+    font-size: 30px;
+    padding: 0 20px;
+}
+.page .topBar h2{
+    text-align: center;
+    margin-right: 44px;
+    
+}
+
+
+
+.reader.container{
+    padding: 10px;
+    background-color: bisque;
+}
+.reader.container h3{
+    font-size: 24px;
+    height: 40px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    margin: 0;
+    line-height: 40px;
+    padding: 5px 20px;
+    text-align: left;
+    color: brown;
+    background-color:bisque; 
+}
+.reader.container .content{
+    margin-top:50px;
+}
+.reader.container .content p{
+    font-size: 20px;
+    text-align: left;
+}
+.reader.container button{
+    padding: 10px 30px;
+    background-color: blueviolet;
+    color: #ccc;
+    border: 1px solid blueviolet;
+    border-radius: 5px;
+    font-size: 18px;
+    margin: 0 20px;
+}
+.reader.container .cover{
+    width: 100%;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    height: 30%;
+    z-index: 9;
+    transform: translateY(-50%);
+    opacity: 0;
+}
+
+
+
+.page .aside{
+    height: 100%;
+    width: 110%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    z-index: 99;
+    background:rgba(0, 0, 0, .8);
+    transform: translateX(-100%);
+    transition: all .5s;
+}
+.page .aside.active{
+    transform: translateX(0%);
+}
+.page .aside .content{
+    width: 60%;
+    background-color: antiquewhite;
+    height: 100%;
+    margin-top: 0;
+}
+.page .aside .right{
+    float: right;
+    width: 40%;
+    height: 100%;
+}

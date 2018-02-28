@@ -2,7 +2,8 @@ import React,{Component} from 'react'
 import AnimatedWrapper from "../animate/animate"
 import {Tabs,Toast} from 'antd-mobile'
 import {Link} from 'react-router-dom'
-import axios from 'axios';
+import axios from 'axios'
+import PubSub from 'pubsub-js'
 import './index.css';
 
 
@@ -19,7 +20,8 @@ class CategoryComponent extends Component{
     super();
     this.state = {
       category:[],
-      isBack:false
+      isBack:false,
+      headerTitle:'详情'
     };
     this.get = this.get.bind(this);
   }
@@ -33,7 +35,10 @@ class CategoryComponent extends Component{
         console.log(err.status);
     })
   }
- 
+  onclick(headerTitle){  
+    //通过PubSub库发布信息  
+    PubSub.publish('headerTitle',headerTitle);  
+  }
     componentDidMount() {
       this.get();            
     }
@@ -51,7 +56,10 @@ class CategoryComponent extends Component{
                 {this.state.category?
                 <div style={{ display: 'flex', alignItems: 'center',flexWrap:'wrap', justifyContent: 'center', height: '100%', backgroundColor: '#fff' }}>
                     {this.state.category.map((val,index)=>(
-                      <Link key={val.id} to={{pathname:`/booklist/${val.id}`,state: `${val.id}`}}  style={{float:'left',width:'48%',margin: '0 1%',}}>
+                      <Link key={val.id}
+                      onClick={()=>{this.onclick(this.state.headerTitle)}}
+                      to={{pathname:`/booklist/${val.id}`,state: `${val.id}`}} 
+                      style={{float:'left',width:'48%',margin: '0 1%',}}>
                       <img className="cover" src={val.images} alt=""/>
                       <p>{val.name}</p>
                       <p>{val.author}</p>

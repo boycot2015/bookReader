@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Route, Switch, Link} from "react-router-dom";
 // import AmazeUIReact from 'amazeui-react'
 import TransitionGroup from "react-transition-group/TransitionGroup";
-
+import PubSub from 'pubsub-js'
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
 
@@ -11,6 +11,7 @@ import Category from './components/category';
 import User from './components/user';
 import Top from './components/top';
 import BookDetail from './components/bookdetail';
+import Reader from './components/reader';
 
 const firstChild = props => {
   const childrenArray = React
@@ -37,11 +38,12 @@ class App extends Component {
           pathname: '/user',
           name: '我的'
         }
-      ]
+      ],
+      isReader:false
     }
   }
-  changeTitle(route) {
-    switch (route) {
+  changeTitle(path) {    
+    switch (path) {
       case '/home':
         this.setState({title: '移动书城'});
         break;
@@ -54,7 +56,6 @@ class App extends Component {
       case '/user':
         this.setState({title: '我的'});
         break;
-
       default:
         break;
     }
@@ -62,14 +63,31 @@ class App extends Component {
   componentWillMount() {
     window.hostName = 'http://localhost:3333';
     this.changeTitle(window.location.pathname);
+    this.pubsub_token = PubSub.subscribe('headerTitle', function (topic,message) { 
+      this.setState({  
+        title: message  
+      });  
+      
+    }.bind(this));
+    this.pubsub_token = PubSub.subscribe('getBookId', function (topic,message) { 
+      this.setState({  
+        isReader: true  
+      });  
+      
+    }.bind(this));
+  }
+  componentWillUnmount(){  
+    PubSub.unsubscribe(this.pubsub_token);
   }
   render() {
     return (
       <div className="App">
+        {this.state.isReader?null:
         <header className="App-header">
-          <h1 className="App-title">{this.state.title}</h1>
+            <h1 className="App-title">{this.state.title}</h1>
         </header>
-           <main>
+        }
+           <main className={this.state.isReader?'hideBar':''}>
            <Switch>
              <Route
                exact
@@ -132,22 +150,34 @@ class App extends Component {
                  {match && <BookDetail {...rest}/>}
                </TransitionGroup>
              )}/>
+             <Route
+               path="/reader/:id"
+               children={({
+               match,
+               ...rest
+             }) => (
+               <TransitionGroup component={Reader}>
+                 {match && <BookDetail {...rest}/>}
+               </TransitionGroup>
+             )}/>
            </Switch>
          </main>
-       
+        {this.state.isReader?null:
         <footer className="tabbar">
-          {this
-            .state
-            .data
-            .map(val => (
-              <Link
-                to={val.pathname}
-                onClick={() => {
-                this.changeTitle(val.pathname) 
-                }} key={val.name}>{val.name}
-              </Link>
-            ))}
+        {this
+          .state
+          .data
+          .map(val => (
+            <Link
+              to={val.pathname}
+              onClick={() => {
+              this.changeTitle(val.pathname) 
+              }} key={val.name}>{val.name}
+            </Link>
+          ))}
         </footer>
+        }
+        
       </div>
     );
   }

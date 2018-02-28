@@ -5,6 +5,7 @@ import {Toast} from 'antd-mobile'
 import './index.css'
 import Star from '../subcomponent/star'
 import {Link} from 'react-router-dom'
+import PubSub from 'pubsub-js'
 class BookDetailComponent extends Component {
     constructor(props){
         super(props);        
@@ -12,7 +13,9 @@ class BookDetailComponent extends Component {
           id: props.children[0].props.location.state,
           data:{},
           recommend:[],
-          isBack:false
+          isBack:false,
+          isLike:"收藏",
+          headerTitle:'详情'
         };
       }
       getRcommend(){
@@ -24,21 +27,35 @@ class BookDetailComponent extends Component {
         }) 
       }
       getData(param){
-          if(param){            
-              this.setState({id:param,isBack:false});                         
-          }
-          let url = `${window.hostName}/booklist?id=${this.state.id}`;
+        this.setState({isBack:false})
+        let url = `${window.hostName}/booklist?id=${this.state.id}`;
+        if(param){            
+            url = `${window.hostName}/booklist?id=${param}`                         
+        }         
           axios.get(url).then(res=>{
             Toast.loading('Loading...', 0.5, () => {
-                this.setState({data:res.data,isBack:true})
+                this.setState({data:res.data,isBack:true,isLike:'收藏'})
                 this.getRcommend()
             })
                           
           },err=>{console.log(err);
           })
       }
+      changeLikeState(){
+        this.setState({isLike:'已收藏'}) 
+        if(this.state.isLike==="已收藏"){
+            Toast.info('你已经收藏过该小说!', 1);
+          }else{
+            Toast.success('收藏成功!', 1);
+          }                        
+      }
+      goReader(id){
+        PubSub.publish('getBookId',id);
+      }
     componentWillMount(){
         this.getData();
+        //通过PubSub库发布信息  
+        PubSub.publish('headerTitle',this.state.headerTitle);      
     }
     render(){
         return(
@@ -54,13 +71,16 @@ class BookDetailComponent extends Component {
                         <p className="author">作者：{this.state.data.author}</p>
                         <p className="type">分类：{this.state.data.type}</p>
                         <p className="totalwords">{this.state.data.wordcount}万字</p>
+                        <p className="totalwords">{this.state.data.like}人收藏</p>
                         <div className="star">
                         <Star value={this.state.data.ratings}></Star>
                         </div>    
                     </div>
                 </div>
-                <button>开始阅读</button>
+                <Link  onClick={this.goReader.bind(this,this.state.data.id)} to={{pathname:`/reader/${this.state.data.id}`,state:this.state.data.id}}><button>开始阅读</button></Link>
+                <button onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</button>
                 <div className="desc">
+                <h4>简介</h4>
                     <p>{this.state.data.intro}</p>
                 </div>
                 <div className="tips">
@@ -72,8 +92,8 @@ class BookDetailComponent extends Component {
                     <ul className="list" >
                         {this.state.recommend.map((val,index)=>(
                           <li key={index}>
-                          <Link onClick={()=>{
-                           this.getData(val.id)}} to={{pathname:`/booklist/${val.id}`,state:val.id}}>
+                          <Link onClick={
+                           this.getData.bind(this,val.id)} to={{pathname:`/booklist/${val.id}`,state:val.id}}>
                           <img className="cover" src={val.images} alt=""/>
                           <p>{val.name}</p>
                           <p>{val.author}</p>
