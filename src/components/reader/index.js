@@ -19,7 +19,8 @@ class Reader extends Component {
             isBack:false,
             isTap:false,
             isAside:false,
-            showStyle:false
+            showStyle:false,
+            isNight:false
         }
     }
     get(options,callback){
@@ -104,15 +105,31 @@ class Reader extends Component {
     }
     toDark(){
         this.setState({
-            bgColor:'#000',
-            color:'#fff'
+            isNight:!this.state.isNight
         })
+        if(this.state.showStyle){
+            this.setState({
+                isNight:false
+            })
+        }
+        if(!this.state.isNight||this.state.showStyle){
+            this.setState({
+                bgColor:'#000',
+                color:'#fff',
+            })
+        }else{
+            this.setState({
+                bgColor:'#FFE4C4',
+                color:'#000',
+            })
+        }
+        console.log(this.state.bgColor,this.state.color);      
     }
     componentWillMount() { 
         this.getData();
         PubSub.publish('getBookId');
         window.onscroll = function(){
-            this.setState({isTap: false})
+            this.setState({isTap: false,showStyle:false})
         }.bind(this)     
         
         // document.querySelector('.aside').onscroll = function(){
@@ -126,8 +143,7 @@ class Reader extends Component {
 
     }
     render() {
-        return (
-            
+        return (          
             <div className="page"> 
                 {this.state.isBack?                   
                     <div style={{backgroundColor:this.state.bgColor}} className="container reader">
@@ -157,16 +173,16 @@ class Reader extends Component {
                             夜间模式
                             </div>
                             
-                            <Styles showStyle={this.state.showStyle} callbackParent={this.getStyle.bind(this)} changeSize={this.getSize.bind(this)} ></Styles>                 
+                            <Styles changeColor={{bgColor:this.state.bgColor,color:this.state.color}} showStyle={this.state.showStyle} callbackParent={this.getStyle.bind(this)} changeSize={this.getSize.bind(this)} ></Styles>                 
                             <h2 onClick={this.styleTogger.bind(this)}>显示</h2>    
                         </div>
-                        <div   style={{ minHeight: document.documentElement.clientHeight }}  className={this.state.isAside?"aside active":"aside"}>
+                        <div  style={{ minHeight: document.documentElement.clientHeight }}  className={this.state.isAside?"aside active":"aside"}>
                             <div onClick={this.showAside.bind(this)} className="right"></div>
                                 <div style={{backgroundColor:this.state.bgColor,color:this.state.color}} className="content">
                                 <h2>{this.state.capterData.name}</h2>
                                 <ul className="capterlist">
                                     {this.state.capterData.titles.map((val,index)=>(
-                                        <li onClick={this.getTitleContent.bind(this,index+1)} key={val}>{val}</li>
+                                        <li onClick={this.getTitleContent.bind(this,index+1)} key={index}>{val}</li>
                                     ))}
                                 </ul>
                             </div>                           

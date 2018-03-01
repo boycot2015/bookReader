@@ -12,7 +12,7 @@
     transform: translateY(0%);
 }
 .page .style-container .fontsize{
-    padding: 20px 0;
+    padding: 10px 0;
 }
 .page .style-container .fontsize span{
     color: black;
@@ -23,6 +23,9 @@
    margin: 0 30px; 
    border-radius: 5px;
 }
+.page .style-container h4{
+    margin: 20px 0;
+}
 .page .style-container .bgcolor{
     padding: 10px 0;
     border-top: 1px solid #ccc;
@@ -31,7 +34,7 @@
     width:30px;
     height:30px;
     border-radius:50%;
-    margin:0 30px;
+    margin:0 20px;
     border: 1px solid #ccc;
     display:inline-block;
 }

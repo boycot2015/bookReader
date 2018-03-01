@@ -8,7 +8,8 @@ super(props)
    this.state = {
       colorStyle:[{bgColor:'#65BFF4',color:'#333'},{bgColor:'#1FB647',color:'#ffb'},{bgColor:'#008BA2',color:'#ffc'},{bgColor:'#A03403',color:'#fff'}],
       fontSize:20,
-      bgcolor:'#FFE4C4'
+      bgcolor:'#FFE4C4',
+      color:'#333'
    }
  }
 changeColor(colorStyle){
@@ -42,14 +43,31 @@ increaseSize(fontSize){
  render(){
    
  return(
- <div style={{backgroundColor:this.state.bgColor}} className={this.props.showStyle?"style-container active":"style-container"}>
+ <div style={{
+   backgroundColor:this.props.changeColor?this.props.changeColor.bgColor:this.state.bgColor,
+   color:this.props.changeColor?this.props.changeColor.color:this.state.color
+   }} className={
+     this.props.showStyle?"style-container active":"style-container"
+     }>
       <div className="fontsize">
-        <span onClick={this.reduceSize.bind(this,this.state.fontSize)}>小</span>
-        <span onClick={this.increaseSize.bind(this,this.state.fontSize)}>大</span>
+      <h4>调整字体大小</h4>
+        <span
+        style={{
+          backgroundColor:this.props.changeColor?this.props.changeColor.bgColor:this.state.bgColor,
+          color:this.props.changeColor?this.props.changeColor.color:this.state.color
+          }}
+         onClick={this.reduceSize.bind(this,this.state.fontSize)}>小</span>
+        <span
+        style={{
+          backgroundColor:this.props.changeColor?this.props.changeColor.bgColor:this.state.bgColor,
+          color:this.props.changeColor?this.props.changeColor.color:this.state.color
+          }}
+         onClick={this.increaseSize.bind(this,this.state.fontSize)}>大</span>
       </div>
       <div className="bgcolor">
+      <h4>更换背景</h4>
         {this.state.colorStyle.map(val=>(
-          <span  onClick={this.changeColor.bind(this,val)} style={{backgroundColor:val.bgColor}}  key={val}></span>
+          <span  onClick={this.changeColor.bind(this,val)} style={{backgroundColor:val.bgColor}}  key={val.bgColor}></span>
         ))}
       </div>
  </div>
