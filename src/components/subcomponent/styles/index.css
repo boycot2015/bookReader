@@ -1,0 +1,37 @@
+.style-container{
+    position:fixed;
+    left:0;
+    width:100%;
+    background-color: #FFE4C4;
+    transform: translateY(100%);
+    transition: all .5s;
+    border: 1px solid #ccc;
+}
+.style-container.active{
+    bottom: 44px;
+    transform: translateY(0%);
+}
+.page .style-container .fontsize{
+    padding: 20px 0;
+}
+.page .style-container .fontsize span{
+    color: black;
+    font-size: 20px;
+    display: inline-block;
+    padding: 10px 30px;
+   border: 1px solid #ccc;
+   margin: 0 30px; 
+   border-radius: 5px;
+}
+.page .style-container .bgcolor{
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+}
+.page .style-container .bgcolor span{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    margin:0 30px;
+    border: 1px solid #ccc;
+    display:inline-block;
+}

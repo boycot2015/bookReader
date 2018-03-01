@@ -1,5 +1,5 @@
 import React,{Component}from 'react'
-import './star.css';
+import './index.css';
 class Star extends Component {
     constructor(props){
         super(props)

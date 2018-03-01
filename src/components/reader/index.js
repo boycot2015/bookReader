@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {Toast} from 'antd-mobile'
 import PubSub from 'pubsub-js'
+import Styles from '../subcomponent/styles'
+// import Drawer from '../subcomponent/drawer';
 import './index.css'
 class Reader extends Component {
     constructor(props) {
@@ -10,19 +12,55 @@ class Reader extends Component {
             bookId:props.children[0].props.location.state,
             data:[],
             pageId:1,
+            capterData:[],
+            bgColor:'#FFE4C4',
+            color:'#000',
+            fontSize:20,
             isBack:false,
             isTap:false,
-            isAside:false
+            isAside:false,
+            showStyle:false
         }
     }
-    getData(id=1){
-        this.setState({isBack:false})
-        let url = `${window.hostName}/book?book=${this.state.bookId}&id=${id}`
+    get(options,callback){
+        let url = `${window.hostName}${options.path}`
         axios.get(url).then(res=>{
-            Toast.loading('loading....',1,()=>{
-                res.data.content = res.data.content.split('-').slice(1);
-                this.setState({data:res.data,isBack:true})
-            })          
+            callback(res);         
+        },err=>{})
+    }
+    getData(id=1,event){
+        // console.log(id);      
+        this.setState({isBack:false})
+        this.get({path:`/book?book=${this.state.bookId}&id=${id}`},(res)=>{
+         Toast.loading('loading....',1,()=>{
+            res.data.content = res.data.content.split('-').slice(1);
+            this.setState({data:res.data})
+            this.getCapterData();
+            }) 
+        })
+    }
+    getCapterData(){
+        this.get({path:`/titles?id=${this.state.bookId}`},(res)=>{
+            res.data.titles = res.data.titles.split('-');
+            // console.log(res.data);        
+            this.setState({capterData:res.data,isBack:true,isTap:false});
+        })
+    }
+    getTitleContent(id){
+        this.getData(id)
+        this.setState({isAside:false})
+        document.body.style.overflow = "auto";
+    }
+
+    getStyle(colorStyle){
+        this.setState({
+            bgColor:colorStyle.bgColor,
+            color:colorStyle.color
+        })
+    }
+    getSize(fontSize){
+        this.setState({
+           fontSize
         })
     }
     prevPage(){
@@ -45,10 +83,13 @@ class Reader extends Component {
         this.getData(this.state.pageId+1)
     }
     showCover(){
+        if(this.state.isTap){
+            this.setState({showStyle:false})
+        }
         this.setState({isTap: !this.state.isTap})
                       
     }
-    showCapter(){
+    showAside(){
         if(!this.state.isAside){
             document.body.style.overflow = "hidden";
         }else{
@@ -56,32 +97,48 @@ class Reader extends Component {
         }
         this.setState({isAside:!this.state.isAside})
     }
-    componentWillMount() {
-        this.getData()
+    styleTogger(){
+        this.setState({
+            showStyle:!this.state.showStyle
+        })
+    }
+    toDark(){
+        this.setState({
+            bgColor:'#000',
+            color:'#fff'
+        })
+    }
+    componentWillMount() { 
+        this.getData();
         PubSub.publish('getBookId');
         window.onscroll = function(){
             this.setState({isTap: false})
-        }.bind(this)
+        }.bind(this)     
+        
+        // document.querySelector('.aside').onscroll = function(){
+        //     console.log(1);          
+        // }.bind(this)
     }
     componentDidMount() {
-        // this.setState({isAside: !this.state.isAside})
+        console.log(this.refs);
     }
     componentWillUnmount() {
 
     }
     render() {
         return (
-            <div className="page">           
+            
+            <div className="page"> 
                 {this.state.isBack?                   
-                    <div className="container reader">
-                        <div className={this.state.isTap?"topBar active":"topBar "}>              
+                    <div style={{backgroundColor:this.state.bgColor}} className="container reader">
+                        <div style={{backgroundColor:this.state.bgColor,color:this.state.color}}  className={this.state.isTap?"topBar active":"topBar "}>              
                             <span>&lt;</span>                    
-                            <h2>设置</h2>
+                            <h2 >设置</h2>
                         </div>
-                        <h3>{this.state.data.title}</h3>
+                        <h3 style={{backgroundColor:this.state.bgColor,color:this.state.color}}>{this.state.data.title}</h3>
                         <div className="content">
                             {this.state.data.content.map((val,index)=>(
-                                <p key={index}>
+                                <p style={{fontSize:this.state.fontSize,color:this.state.color}} key={index}>
                                     {val}
                                 </p>
                             ))}
@@ -90,25 +147,27 @@ class Reader extends Component {
                         </div> 
                         <button onClick={this.prevPage.bind(this)}>上一章</button>
                         <button onClick={this.nextPage.bind(this)}>下一章</button>
-                        <div className={this.state.isTap?"bottomBar active":"bottomBar "}>              
-                            <div onClick={this.showCapter.bind(this)} className="left">
+                        <div style={{backgroundColor:this.state.bgColor,color:this.state.color}} className={this.state.isTap?"bottomBar active":"bottomBar "}>              
+                            <div onClick={this.showAside.bind(this)} className="left">
                             <span>——</span>
                             <span>——</span>
                             <span>——</span>
                             </div>   
-                            <div className="right">
+                            <div onClick={this.toDark.bind(this)} className="right">
                             夜间模式
-                            </div>                 
-                            <h2>字体</h2>    
+                            </div>
+                            
+                            <Styles showStyle={this.state.showStyle} callbackParent={this.getStyle.bind(this)} changeSize={this.getSize.bind(this)} ></Styles>                 
+                            <h2 onClick={this.styleTogger.bind(this)}>显示</h2>    
                         </div>
-                        <div   className={this.state.isAside?"aside active":"aside"}>
-                            <div onClick={this.showCapter.bind(this)} className="right"></div>
-                                <div className="content">
-                                <h2>标题</h2>
-                                <ul className="list">
-                                    <li>1</li>
-                                    <li>2</li>
-                                    <li>3</li>
+                        <div   style={{ minHeight: document.documentElement.clientHeight }}  className={this.state.isAside?"aside active":"aside"}>
+                            <div onClick={this.showAside.bind(this)} className="right"></div>
+                                <div style={{backgroundColor:this.state.bgColor,color:this.state.color}} className="content">
+                                <h2>{this.state.capterData.name}</h2>
+                                <ul className="capterlist">
+                                    {this.state.capterData.titles.map((val,index)=>(
+                                        <li onClick={this.getTitleContent.bind(this,index+1)} key={val}>{val}</li>
+                                    ))}
                                 </ul>
                             </div>                           
                         </div>

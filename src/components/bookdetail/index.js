@@ -3,7 +3,7 @@ import AnimatedWrapper from "../animate/animate"
 import axios from 'axios'
 import {Toast} from 'antd-mobile'
 import './index.css'
-import Star from '../subcomponent/star'
+import Star from '../subcomponent/star/index'
 import {Link} from 'react-router-dom'
 import PubSub from 'pubsub-js'
 class BookDetailComponent extends Component {
