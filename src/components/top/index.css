@@ -1,0 +1,88 @@
+.page .container section{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    background-color: #f5f5f5; 
+}
+.page .container section h2{
+    box-sizing: border-box;
+    padding: 10px;
+    border-left: 3px solid salmon;
+    width: 100%;
+    background-color: #fff;
+    text-align: left;
+}
+.page .container section:nth-child(1) h2{
+    color: hotpink;
+}
+.page .container section:nth-child(2) h2{
+    color: yellowgreen;
+}
+.page .container section:nth-child(3) h2{
+    color: deepskyblue;
+}
+.page .container section>.toplist li>a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+.page .container section>.toplist li{
+    margin: 10px 0;
+    width: 100%;
+    background-color: #fff;
+}
+.page .container section>.toplist li>a>.left{
+    width: 30%;
+}
+.page .container section>.toplist li>a>.right{
+    width: 65%;    
+}
+.page .container section>.toplist li>a>.right>.bottom{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    height: 50px;
+}
+.page .container section>.toplist li>a>.right h3{
+    color: #333;
+    font-size: 22px;
+    font-weight: normal;
+}
+.page .container section>.toplist li>a>.right>p{
+    color: #666;
+}
+.page .container section>.toplist li>a>.right>.bottom span{
+    color: #333;
+    font-size: 10px;        
+}
+.page .container section>.toplist li>a>.right>.bottom i{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    transform: translateY(2px);
+    background: url('../../images/avator.png') no-repeat center;
+}
+.toplist li>a>.right>.bottom>.desc span{
+    border-radius: 5px;
+    padding: 2px;
+    margin-left:1px;
+}
+.page .container section>.toplist li>a>.right>.bottom>.desc span:nth-child(1){
+    background-color: red;
+    color: #fff;
+}
+.page .container section>.toplist li>a>.right>.bottom>.desc span:nth-child(2){
+    background-color:greenyellow;
+    color: #333;
+}
+.page .container section>.toplist li>a>.right>.bottom>.desc span:nth-child(3){
+    background-color:skyblue;
+    color: #fff;
+}
+.page .container section>.toplist li>a>.left>img{
+    width: 100%;
+    vertical-align: middle;
+}

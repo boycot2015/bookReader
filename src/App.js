@@ -3,6 +3,7 @@ import {Route, Switch, Link} from "react-router-dom";
 // import AmazeUIReact from 'amazeui-react'
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import PubSub from 'pubsub-js'
+
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
 
@@ -71,7 +72,7 @@ class App extends Component {
     }.bind(this));
     this.pubsub_token = PubSub.subscribe('getBookId', function (topic,message) { 
       this.setState({  
-        isReader: true  
+        isReader: message  
       });  
       
     }.bind(this));

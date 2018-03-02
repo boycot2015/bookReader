@@ -28,10 +28,14 @@ class BookDetailComponent extends Component {
       }
       getData(param){
         this.setState({isBack:false})
-        let url = `${window.hostName}/booklist?id=${this.state.id}`;
+        let url = `${window.hostName}/booklist?id=`;
         if(param){            
-            url = `${window.hostName}/booklist?id=${param}`                         
-        }         
+            url +=param                                     
+        }else if(this.state.data.id){
+            url += this.state.data.id
+        } else{
+            url += this.state.id
+        }        
           axios.get(url).then(res=>{
             Toast.loading('Loading...', 0.5, () => {
                 this.setState({data:res.data,isBack:true,isLike:'收藏'})
@@ -52,10 +56,15 @@ class BookDetailComponent extends Component {
       goReader(id){
         PubSub.publish('getBookId',id);
       }
-    componentWillMount(){
+    componentWillMount(){            
         this.getData();
         //通过PubSub库发布信息  
         PubSub.publish('headerTitle',this.state.headerTitle);      
+    }
+    componentDidMount(){
+        this.setState({
+            id:this.props.children[0].props.location.state
+        })
     }
     render(){
         return(
@@ -77,8 +86,10 @@ class BookDetailComponent extends Component {
                         </div>    
                     </div>
                 </div>
-                <Link  onClick={this.goReader.bind(this,this.state.data.id)} to={{pathname:`/reader/${this.state.data.id}`,state:this.state.data.id}}><button>开始阅读</button></Link>
-                <button onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</button>
+                <div className="bottom">
+                    <Link  onClick={this.goReader.bind(this,this.state.data.id)} to={{pathname:`/reader/${this.state.data.id}`,state:this.state.data.id}}><button>开始阅读</button></Link>
+                    <button onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</button>
+                </div> 
                 <div className="desc">
                 <h4>简介</h4>
                     <p>{this.state.data.intro}</p>

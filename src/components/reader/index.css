@@ -17,10 +17,12 @@
 .page .bottomBar{
     transform: translateY(100%);
     bottom: 0;
+    width: 100%;
 }
-.page .bottomBar span{
+.page .bottomBar .left span{
     display: block;
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 44px;
 }
 .page .bottomBar .left{
     float: left;
@@ -30,6 +32,8 @@
 }
 .page .bottomBar h2{
     line-height: 44px;
+    font-weight: normal;
+    text-align: center;
 }
 .page .bottomBar .right{
     float: right;
@@ -39,6 +43,7 @@
 }
 .page .topBar.active,.page .bottomBar.active{
     transform: translateY(0%); 
+    width: 100%;
 }
 .page .topBar span{
     float: left;
@@ -47,7 +52,7 @@
 }
 .page .topBar h2{
     text-align: center;
-    margin-right: 44px;
+    margin-right: 80px;
     
 }
 

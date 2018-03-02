@@ -24,6 +24,20 @@
   img.cover{
     width: 100%;
   }
+  .container nav>h3{
+    padding: 10px;
+    font-weight: normal;
+    font-size: 24px;
+    color: #333;
+  }
+  .container nav::after{
+    content: "";
+    display: block;
+    width: 20%;
+    margin: 0 auto;
+    height: 3px;
+    background-color: #666;
+  }
   .content .list{
     display: flex;
     justify-content: space-between;

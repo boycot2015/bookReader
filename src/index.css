@@ -13,6 +13,13 @@ ul,ol,dl{
   padding: 0;
   list-style: none;
 }
+p{
+    margin: 0;
+    padding: 10px 0;
+}
+a{
+    color: #333;
+}
 body {
     margin: 0;
     padding: 0;

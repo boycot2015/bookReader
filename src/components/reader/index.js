@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {Toast} from 'antd-mobile'
 import PubSub from 'pubsub-js'
+// import {Link} from 'react-router-dom'
 import Styles from '../subcomponent/styles'
 // import Drawer from '../subcomponent/drawer';
 import './index.css'
@@ -49,7 +50,7 @@ class Reader extends Component {
     }
     getTitleContent(id){
         this.getData(id)
-        this.setState({isAside:false})
+        this.setState({isAside:false,pageId:id})
         document.body.style.overflow = "auto";
     }
 
@@ -123,24 +124,23 @@ class Reader extends Component {
                 color:'#000',
             })
         }
-        console.log(this.state.bgColor,this.state.color);      
     }
-    componentWillMount() { 
+    goBack(){
+        this.props.children[0].props.history.goBack()
+    }
+    componentWillMount() {
         this.getData();
-        PubSub.publish('getBookId');
+        PubSub.publish('getBookId',true);
         window.onscroll = function(){
             this.setState({isTap: false,showStyle:false})
         }.bind(this)     
-        
-        // document.querySelector('.aside').onscroll = function(){
-        //     console.log(1);          
-        // }.bind(this)
     }
-    componentDidMount() {
-        console.log(this.refs);
-    }
-    componentWillUnmount() {
-
+    componentWillUnmount(){
+        //重写组件的setState方法，直接返回空
+        PubSub.publish('getBookId',false);
+        this.setState = (state,callback)=>{
+          return;
+        }; 
     }
     render() {
         return (          
@@ -148,7 +148,8 @@ class Reader extends Component {
                 {this.state.isBack?                   
                     <div style={{backgroundColor:this.state.bgColor}} className="container reader">
                         <div style={{backgroundColor:this.state.bgColor,color:this.state.color}}  className={this.state.isTap?"topBar active":"topBar "}>              
-                            <span>&lt;</span>                    
+                            {/* <Link to={{pathname:`/booklist/${this.state.data.id}`,state:this.state.data.id}}><span>&lt;</span></Link> */}
+                            <span onClick={this.goBack.bind(this)}>&lt;</span>
                             <h2 >设置</h2>
                         </div>
                         <h3 style={{backgroundColor:this.state.bgColor,color:this.state.color}}>{this.state.data.title}</h3>
@@ -165,9 +166,7 @@ class Reader extends Component {
                         <button onClick={this.nextPage.bind(this)}>下一章</button>
                         <div style={{backgroundColor:this.state.bgColor,color:this.state.color}} className={this.state.isTap?"bottomBar active":"bottomBar "}>              
                             <div onClick={this.showAside.bind(this)} className="left">
-                            <span>——</span>
-                            <span>——</span>
-                            <span>——</span>
+                            <span>三</span>
                             </div>   
                             <div onClick={this.toDark.bind(this)} className="right">
                             夜间模式

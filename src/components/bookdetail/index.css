@@ -6,22 +6,38 @@
 }
 .page .top .left{
     margin-right: 20px;
+    width: 50%;
+}
+.page .top .left img{
+    width: 100%;
+}
+.page .top .right{
+    width: 50%;
+    text-align: left;
+}
+.page .content .bottom-button{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 .content .desc {
     text-align: left;
-    padding: 20px;
+    padding: 10px;
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #ccc;
+}
+.content .desc h4,.content .tips h4{
+    padding: 10px 0;
 }
 .content button{
     background-color: #fff;
     border-radius: 5px;
     border: 1px solid orange;
-    margin: 10px 30px;
+    margin: 10px 5px;
     padding: 10px 30px;
 }
 .content .tips{
-    padding: 10px 0 10px 20px;
+    padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ccc;
 }

@@ -1,5 +1,6 @@
 import React,{ Component } from 'react'
-import {Toast} from 'antd-mobile'
+import Toast from 'antd-mobile/lib/toast'
+import  'antd-mobile/lib/toast/style'
 import './index.css'
 class Styles extends Component {
   constructor(props){
