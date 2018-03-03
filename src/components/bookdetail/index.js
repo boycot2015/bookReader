@@ -1,13 +1,17 @@
 import React,{ Component } from 'react'
-import AnimatedWrapper from "../animate/animate"
+// import AnimatedWrapper from "../animate/animate"
 import axios from 'axios'
-import {Toast} from 'antd-mobile'
+import {Modal,Button,Toast} from 'antd-mobile'
 import './index.css'
 import Star from '../subcomponent/star/index'
 import {Link} from 'react-router-dom'
 import PubSub from 'pubsub-js'
+// import { browserHistory } from 'react-router'
+import {withRouter} from 'react-router'
+
+const alert = Modal.alert;
 class BookDetailComponent extends Component {
-    constructor(props){
+    constructor(props,{match}){
         super(props);        
         this.state = {
           id: props.children[0].props.location.state,
@@ -15,10 +19,11 @@ class BookDetailComponent extends Component {
           recommend:[],
           isBack:false,
           isLike:"收藏",
-          headerTitle:'详情'
+          headerTitle:'详情',
+          match
         };
       }
-      getRcommend(){
+      getRcommend(){//猜你喜欢
         let url = `${window.hostName}/booklist`;
         axios.get(url).then(res=>{
             let startCount = Math.floor(Math.random()*(res.data.length-3));            
@@ -26,7 +31,7 @@ class BookDetailComponent extends Component {
         },err=>{console.log(err);
         }) 
       }
-      getData(param){
+      getData(param){//获取数据
         this.setState({isBack:false})
         let url = `${window.hostName}/booklist?id=`;
         if(param){            
@@ -45,16 +50,33 @@ class BookDetailComponent extends Component {
           },err=>{console.log(err);
           })
       }
-      changeLikeState(){
-        this.setState({isLike:'已收藏'}) 
-        if(this.state.isLike==="已收藏"){
-            Toast.info('你已经收藏过该小说!', 1);
+      changeLikeState(){//收藏，需要登录
+          const loginState = window.sessionStorage.getItem('user');
+          if(loginState){              
+            this.setState({isLike:'已收藏'})
+            this.seaveBook(loginState);                       
+            if(this.state.isLike==="已收藏"){                
+                Toast.info('你已经收藏过该小说!', 1);
+            }else{
+                Toast.success('收藏成功!', 1);
+            } 
           }else{
-            Toast.success('收藏成功!', 1);
-          }                        
+            alert('未登录！', '点击确定跳转至登录页', [
+                { text: '取消'},
+                { text: '确定', onPress: () =>{this.props.history.push('/login');
+                PubSub.publish('headerTitle','登录')} },
+              ])
+          }
+                               
       }
-      goReader(id){
+      goReader(id){//传bookid到阅读器
         PubSub.publish('getBookId',id);
+      }
+      seaveBook(user){
+          let url = `${window.hostName}/savebook?id=${this.state.id}&username=${user}`
+          axios.get(url).then(res=>{
+            
+          },err=>{})
       }
     componentWillMount(){            
         this.getData();
@@ -86,9 +108,9 @@ class BookDetailComponent extends Component {
                         </div>    
                     </div>
                 </div>
-                <div className="bottom">
+                <div className="bottom-button">
                     <Link  onClick={this.goReader.bind(this,this.state.data.id)} to={{pathname:`/reader/${this.state.data.id}`,state:this.state.data.id}}><button>开始阅读</button></Link>
-                    <button onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</button>
+                    <Button style={{border:'1px solid orange'}} onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</Button>
                 </div> 
                 <div className="desc">
                 <h4>简介</h4>
@@ -120,5 +142,5 @@ class BookDetailComponent extends Component {
         )
     }
 }
-const BookDetail = AnimatedWrapper(BookDetailComponent);
-export default BookDetail;
+// const BookDetail = AnimatedWrapper(BookDetailComponent);
+export default withRouter(BookDetailComponent);

@@ -9,7 +9,9 @@ import './App.css';
 
 import Home from './components/home';
 import Category from './components/category';
-import User from './components/user';
+import Login from './components/user/login';
+import Userinfo from './components/user/userinfo';
+import Register from './components/user/register';
 import Top from './components/top';
 import BookDetail from './components/bookdetail';
 import Reader from './components/reader';
@@ -36,7 +38,7 @@ class App extends Component {
           pathname: '/top',
           name: '排行'
         }, {
-          pathname: '/user',
+          pathname: '/userinfo',
           name: '我的'
         }
       ],
@@ -54,7 +56,7 @@ class App extends Component {
       case '/top':
         this.setState({title: '排行榜'});
         break;
-      case '/user':
+      case '/userinfo':
         this.setState({title: '我的'});
         break;
       default:
@@ -122,13 +124,33 @@ class App extends Component {
                </TransitionGroup>
              )}/>
              <Route
-               path="/user"
+               path="/login"
                children={({
                match,
                ...rest
              }) => (
                <TransitionGroup component={firstChild}>
-                 {match && <User {...rest}/>}
+                 {match && <Login {...rest}/>}
+               </TransitionGroup>
+             )}/>
+              <Route
+               path="/userinfo"
+               children={({
+               match,
+               ...rest
+             }) => (
+               <TransitionGroup component={firstChild}>
+                 {match && <Userinfo {...rest}/>}
+               </TransitionGroup>
+             )}/>
+              <Route
+               path="/register"
+               children={({
+               match,
+               ...rest
+             }) => (
+               <TransitionGroup component={firstChild}>
+                 {match && <Register {...rest}/>}
                </TransitionGroup>
              )}/>
              <Route

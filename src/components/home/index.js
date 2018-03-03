@@ -30,10 +30,9 @@ class HomeComponent extends Component{
     this.get = this.get.bind(this);
   }
   get(){
-    this.getBannerData();
     let url = `${window.hostName}/booklist`
     axios.get(url).then((res)=>{
-      Toast.loading('Loading...', 0.5, () => {
+      Toast.loading('Loading...', 0.8, () => {             
         this.setState({category:[
           res.data.slice(0,8),
           res.data.slice(8,16),
@@ -51,7 +50,8 @@ class HomeComponent extends Component{
   getBannerData(){
     let url = `${window.hostName}/banner`
     axios.get(url).then((res)=>{
-        this.setState({data:res.data});          
+        this.setState({data:res.data}); 
+        this.get();         
     }).catch((err)=>{
         console.log(err.status);
     })
@@ -61,16 +61,18 @@ class HomeComponent extends Component{
     PubSub.publish('headerTitle',headerTitle);  
   }
     componentWillMount() {        
-      this.get();
+      this.getBannerData()
     }
     render(){     
         return (
             <div className="page">
                 
-                {this.state.category[0]?
-                
+                {this.state.category[0]?               
                <div className="content">
-               <Carousel autoplay={true} infinite dots={true} selectedIndex={0} >
+               <Carousel autoplay={true} infinite dots={true} 
+               dotActiveStyle={{width:30,height:4,borderRadius: 0,backgroundColor:'red'}}
+                dotStyle={{width:30,height:4,borderRadius: 0}} 
+                selectedIndex={0} >
                   {this.state.data.map(val => (
                     <a 
                     key={val}
@@ -100,7 +102,7 @@ class HomeComponent extends Component{
                           <Link to={{pathname:`/booklist/${val.id}`,state:val.id}} onClick={()=>{this.onclick(this.state.headerTitle)}} >
                           <img  className="cover" src={val.images} alt=""/>
                           <p>{val.name}</p>
-                          <p>{val.author}</p>
+                          <span>{val.author}</span>
                           </Link>
                         </li>
                         ))}  

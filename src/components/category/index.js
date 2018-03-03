@@ -54,12 +54,15 @@ class CategoryComponent extends Component{
                   }}
                 >              
                 {this.state.category?
-                <div style={{ display: 'flex', alignItems: 'center',flexWrap:'wrap', justifyContent: 'center', height: '100%', backgroundColor: '#fff' }}>
+                <div style={{ display: 'flex', 
+                alignItems: 'center',
+                flexWrap:'wrap', 
+                justifyContent: 'space-between', height: '100%', backgroundColor: '#f5f5f5' }}>
                     {this.state.category.map((val,index)=>(
                       <Link key={val.id}
                       onClick={()=>{this.onclick(this.state.headerTitle)}}
                       to={{pathname:`/booklist/${val.id}`,state: `${val.id}`}} 
-                      style={{float:'left',width:'48%',margin: '0 1%',}}>
+                      style={{backgroundColor: '#fff',margin:'2% 0',width:'48%'}}>
                       <img className="cover" src={val.images} alt=""/>
                       <p>{val.name}</p>
                       <p>{val.author}</p>

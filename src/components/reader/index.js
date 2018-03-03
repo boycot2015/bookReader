@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {Toast} from 'antd-mobile'
 import PubSub from 'pubsub-js'
+import {withRouter} from 'react-router'
 // import {Link} from 'react-router-dom'
 import Styles from '../subcomponent/styles'
 // import Drawer from '../subcomponent/drawer';
@@ -126,7 +127,7 @@ class Reader extends Component {
         }
     }
     goBack(){
-        this.props.children[0].props.history.goBack()
+        this.props.history.goBack()
     }
     componentWillMount() {
         this.getData();
@@ -192,4 +193,4 @@ class Reader extends Component {
         )
     }
 }
-export default Reader;
+export default withRouter(Reader);
