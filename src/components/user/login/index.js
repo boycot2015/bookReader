@@ -3,6 +3,7 @@ import { List, InputItem, Switch, Button } from 'antd-mobile';
 import { createForm } from 'rc-form'
 import {Toast} from 'antd-mobile'
 import {withRouter} from 'react-router'
+import PubSub from 'pubsub-js'
 import axios from 'axios'
 import './inedx.css'
 
@@ -16,7 +17,6 @@ class BasicInput extends Component {
   onSubmit = () => {
     this.props.form.validateFields({ force: true }, (error) => {
       if (!error) {
-        console.log(JSON.stringify(this.props.form.getFieldsValue()));
         let userData  = this.props.form.getFieldsValue();
         this.post(userData);
       }
@@ -32,16 +32,25 @@ class BasicInput extends Component {
     data: userData,
   }).then(res=>{
       Toast.loading('正在登录...',1,()=>{
-        console.log(res.data);
         if(res.data.code===200){
-          window.sessionStorage.setItem('user',userData.account)
-          Toast.info(res.data.message,1)
-          this.props.history.push('/userinfo');
+          window.sessionStorage.setItem('user',JSON.stringify(res.data.userinfo));         
+          setTimeout(function(){
+            Toast.success(res.data.message,1,()=>{
+              this.props.history.push('/userinfo');            
+            })
+          }.bind(this),100)
         }else{
-          Toast.info(res.data.message,1)
+          setTimeout(function(){
+            Toast.info(res.data.message,1)
+          },100)
+          
         }
       })     
     })
+  }
+  toRegister(){
+    this.props.history.push('/register')
+    PubSub.publish('headerTitle','注册')
   }
   onReset = () => {
     this.props.form.resetFields();
@@ -54,8 +63,9 @@ class BasicInput extends Component {
     }
   }
   componentWillMount(){
-    Toast.loading('Loading...', 0.2, () => {
-      this.setState({isBack:true})          
+    PubSub.publish('headerTitle','登录')              
+    Toast.loading('Loading...', 0.8, () => {
+      this.setState({isBack:true})
     })
   }
   render() {
@@ -66,7 +76,6 @@ class BasicInput extends Component {
     {this.state.isBack?
     <form>
     <List
-      renderHeader={() => '登录'}
       renderFooter={() => getFieldError('account') && getFieldError('account').join(':')}
     >
       <InputItem
@@ -86,7 +95,7 @@ class BasicInput extends Component {
         <Switch {...getFieldProps('1', { initialValue: true, valuePropName: 'checked' })}>记住密码</Switch>
       </InputItem>
       <Button type="primary" size="small" inline onClick={this.onSubmit}>登录</Button>
-      <Button type="warning" size="small" inline >注册</Button>
+      <Button type="warning" size="small" inline onClick={this.toRegister.bind(this)}>注册</Button>
     </List>
   </form>
   :null}

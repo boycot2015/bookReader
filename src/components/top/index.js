@@ -28,7 +28,6 @@ class TopComponent extends Component{
             isBack:false
         })
         this.get({path:'/top'},(res)=>{
-            console.log(res.data); 
             for (const key in res.data) {
                 if (res.data.hasOwnProperty(key)) {
                     res.data[key].forEach(el => {

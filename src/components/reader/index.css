@@ -133,13 +133,13 @@
     width: 38%;
     height: 100%;
 }
-.page .aside .content .capterlist{
+.page .aside .content ul.capterlist{
     position: relative;
     overflow-x: hidden;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 }
-.page .aside .content .capterlist li{
+.page .aside .content ul.capterlist li{
     text-align: left;
     font-size: 20px;
     overflow: hidden;

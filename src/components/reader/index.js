@@ -50,7 +50,9 @@ class Reader extends Component {
         })
     }
     getTitleContent(id){
-        this.getData(id)
+        if(id){
+            this.getData(id)            
+        }
         this.setState({isAside:false,pageId:id})
         document.body.style.overflow = "auto";
     }

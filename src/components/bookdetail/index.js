@@ -18,7 +18,7 @@ class BookDetailComponent extends Component {
           data:{},
           recommend:[],
           isBack:false,
-          isLike:"收藏",
+          isLike:'收藏',
           headerTitle:'详情',
           match
         };
@@ -32,6 +32,7 @@ class BookDetailComponent extends Component {
         }) 
       }
       getData(param){//获取数据
+        this.changeCellection(param);
         this.setState({isBack:false})
         let url = `${window.hostName}/booklist?id=`;
         if(param){            
@@ -43,28 +44,27 @@ class BookDetailComponent extends Component {
         }        
           axios.get(url).then(res=>{
             Toast.loading('Loading...', 0.5, () => {
-                this.setState({data:res.data,isBack:true,isLike:'收藏'})
+                this.setState({data:res.data,isBack:true})
                 this.getRcommend()
-            })
-                          
+            })                        
           },err=>{console.log(err);
           })
       }
       changeLikeState(){//收藏，需要登录
-          const loginState = window.sessionStorage.getItem('user');
+          const loginState = window.sessionStorage.getItem('user');      
           if(loginState){              
             this.setState({isLike:'已收藏'})
-            this.seaveBook(loginState);                       
             if(this.state.isLike==="已收藏"){                
                 Toast.info('你已经收藏过该小说!', 1);
             }else{
+                this.seaveBook(JSON.parse(loginState).username);                                       
                 Toast.success('收藏成功!', 1);
             } 
           }else{
             alert('未登录！', '点击确定跳转至登录页', [
                 { text: '取消'},
                 { text: '确定', onPress: () =>{this.props.history.push('/login');
-                PubSub.publish('headerTitle','登录')} },
+                PubSub.publish('headerTitle','登录')}},
               ])
           }
                                
@@ -73,13 +73,34 @@ class BookDetailComponent extends Component {
         PubSub.publish('getBookId',id);
       }
       seaveBook(user){
-          let url = `${window.hostName}/savebook?id=${this.state.id}&username=${user}`
+          let userData = window.sessionStorage.getItem('user');
+          let newData = JSON.parse(userData);
+          if(newData.likebookid&&newData.likebookid.indexOf(this.state.data.id)){
+              newData.likebookid += ','+this.state.data.id;
+          }else{           
+            newData.likebookid = ''+this.state.data.id;          
+          }
+          window.sessionStorage.setItem('user',JSON.stringify(newData));          
+          let url = `${window.hostName}/savebook?id=${this.state.data.id}&username=${user}`
           axios.get(url).then(res=>{
             
           },err=>{})
       }
-    componentWillMount(){            
+    changeCellection(param){        
+        const loginState = window.sessionStorage.getItem('user');
+        if(loginState&&JSON.parse(loginState).likebookid){                             
+            const ids = JSON.parse(loginState).likebookid;
+            if(loginState&&ids.indexOf(this.state.id)!==-1){
+                this.setState({isLike:'已收藏'})
+                if(this.state.data.id&&ids.indexOf(param)===-1){
+                    this.setState({isLike:'收藏'})
+                }
+            }               
+        }
+    }
+    componentWillMount(){                 
         this.getData();
+        this.changeCellection();
         //通过PubSub库发布信息  
         PubSub.publish('headerTitle',this.state.headerTitle);      
     }
@@ -110,7 +131,7 @@ class BookDetailComponent extends Component {
                 </div>
                 <div className="bottom-button">
                     <Link  onClick={this.goReader.bind(this,this.state.data.id)} to={{pathname:`/reader/${this.state.data.id}`,state:this.state.data.id}}><button>开始阅读</button></Link>
-                    <Button style={{border:'1px solid orange'}} onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</Button>
+                    <Button style={{border:'1px solid orange',backgroundColor:this.state.isLike==="已收藏"?'orange':'',color:this.state.isLike==="已收藏"?'#fff':'#333'}} onClick={this.changeLikeState.bind(this)}>{this.state.isLike}</Button>
                 </div> 
                 <div className="desc">
                 <h4>简介</h4>
@@ -135,8 +156,7 @@ class BookDetailComponent extends Component {
                         ))}  
                     </ul>
                 </div>
-                </div>
-                
+                </div>               
                 :null}
             </div>
         )

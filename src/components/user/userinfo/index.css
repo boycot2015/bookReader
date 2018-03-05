@@ -1,0 +1,56 @@
+.container{
+    background-color: #f5f5f5;
+}
+.container .userinfo{
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    align-items: center; 
+    flex-wrap: wrap;
+    margin: 10px 0;  
+    padding: 5px 0; 
+}
+.container .userinfo .avator{
+    width: 20%;
+}
+.container .userinfo img{
+    border-radius: 50%;
+    width: 100%;
+}
+.container .userinfo h2{
+    width: 60%;
+    margin: 10px 0;
+}
+.container .content h3{
+    padding: 10px ;
+    background-color: #fff;
+    text-align: left;
+    border-left: 3px solid red;
+}
+.container .content>ul.booklist{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.container .content>ul.booklist li{
+    width: 24%;
+    background-color: #fff;
+    margin: 10px 0;
+    padding-bottom: 5px;
+}
+
+.container .content ul>li p {
+    padding: 5px 0;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.container .content ul>li span{
+    font-size: 12px;
+    color: #666;
+}
+.container .content .am-button.am-button-warning{
+    margin: 20px 0;
+}

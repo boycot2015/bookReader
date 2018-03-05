@@ -7,18 +7,18 @@ import {Toast} from 'antd-mobile'
 import PubSub from 'pubsub-js'
 
 
-// import img1 from '../../images/1.e64fa90.jpg';
-// import img2 from '../../images/2.3cfb112.jpg';
-// import img3 from '../../images/3.afa33f3.jpg';
-// import img4 from '../../images/4.1c9651f.jpg';
-// import img5 from '../../images/5.5f3df4d.jpg';
+import img1 from '../../images/1.e64fa90.jpg';
+import img2 from '../../images/2.3cfb112.jpg';
+import img3 from '../../images/3.afa33f3.jpg';
+import img4 from '../../images/4.1c9651f.jpg';
+import img5 from '../../images/5.5f3df4d.jpg';
 import './index.css';
 
 class HomeComponent extends Component{
   constructor(){
     super();
     this.state = {
-      data: [],
+      data: [{images:img1},{images:img2},{images:img3},{images:img4},{images:img5}],
       category:[],
       imgHeight: 176,
       slideIndex: 0,
@@ -60,13 +60,13 @@ class HomeComponent extends Component{
     //通过PubSub库发布信息  
     PubSub.publish('headerTitle',headerTitle);  
   }
-    componentWillMount() {        
-      this.getBannerData()
+    componentWillMount() {  
+      this.get();      
+      // this.getBannerData()
     }
     render(){     
         return (
-            <div className="page">
-                
+            <div className="page">              
                 {this.state.category[0]?               
                <div className="content">
                <Carousel autoplay={true} infinite dots={true} 

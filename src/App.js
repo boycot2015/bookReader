@@ -64,7 +64,7 @@ class App extends Component {
     }
   }
   componentWillMount() {
-    window.hostName = 'http://localhost:3333';
+    window.hostName = 'http://120.77.212.27:3001';
     this.changeTitle(window.location.pathname);
     this.pubsub_token = PubSub.subscribe('headerTitle', function (topic,message) { 
       this.setState({  
@@ -149,7 +149,7 @@ class App extends Component {
                match,
                ...rest
              }) => (
-               <TransitionGroup component={firstChild}>
+               <TransitionGroup component={Register}>
                  {match && <Register {...rest}/>}
                </TransitionGroup>
              )}/>
