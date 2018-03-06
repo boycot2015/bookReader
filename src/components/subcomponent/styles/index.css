@@ -2,9 +2,10 @@
     position:fixed;
     left:0;
     width:100%;
+    z-index: 98;
     background-color: #FFE4C4;
     transform: translateY(100%);
-    transition: all .5s;
+    transition: all .6s;
     border: 1px solid #ccc;
 }
 .style-container.active{

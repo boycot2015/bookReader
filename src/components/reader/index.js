@@ -178,7 +178,7 @@ class Reader extends Component {
                             <Styles changeColor={{bgColor:this.state.bgColor,color:this.state.color}} showStyle={this.state.showStyle} callbackParent={this.getStyle.bind(this)} changeSize={this.getSize.bind(this)} ></Styles>                 
                             <h2 onClick={this.styleTogger.bind(this)}>显示</h2>    
                         </div>
-                        <div  style={{ minHeight: document.documentElement.clientHeight }}  className={this.state.isAside?"aside active":"aside"}>
+                        <div style={{ minHeight: document.documentElement.clientHeight }}  className={this.state.isAside?"aside active":"aside"}>
                             <div onClick={this.showAside.bind(this)} className="right"></div>
                                 <div style={{backgroundColor:this.state.bgColor,color:this.state.color}} className="content">
                                 <h2>{this.state.capterData.name}</h2>

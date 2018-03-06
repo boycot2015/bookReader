@@ -7,11 +7,11 @@ import {Toast} from 'antd-mobile'
 import PubSub from 'pubsub-js'
 
 
-import img1 from '../../images/1.e64fa90.jpg';
-import img2 from '../../images/2.3cfb112.jpg';
-import img3 from '../../images/3.afa33f3.jpg';
-import img4 from '../../images/4.1c9651f.jpg';
-import img5 from '../../images/5.5f3df4d.jpg';
+import img1 from '../../images/banner1.jpg';
+import img2 from '../../images/banner2.jpg';
+import img3 from '../../images/banner3.jpg';
+import img4 from '../../images/banner4.jpg';
+import img5 from '../../images/banner5.jpg';
 import './index.css';
 
 class HomeComponent extends Component{

@@ -3,7 +3,7 @@ import {Route, Switch, Link} from "react-router-dom";
 // import AmazeUIReact from 'amazeui-react'
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import PubSub from 'pubsub-js'
-
+import {withRouter} from 'react-router'
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
 
@@ -65,24 +65,25 @@ class App extends Component {
   }
   componentWillMount() {
     window.hostName = 'http://120.77.212.27:3001';
+    // window.hostName = 'http://192.168.1.64:3001';
     this.changeTitle(window.location.pathname);
     this.pubsub_token = PubSub.subscribe('headerTitle', function (topic,message) { 
       this.setState({  
         title: message  
-      });  
-      
+      });      
     }.bind(this));
     this.pubsub_token = PubSub.subscribe('getBookId', function (topic,message) { 
       this.setState({  
         isReader: message  
       });  
       
-    }.bind(this));
+    }.bind(this));    
   }
   componentWillUnmount(){  
     PubSub.unsubscribe(this.pubsub_token);
   }
   render() {
+    const path = this.props.history.location.pathname;
     return (
       <div className="App">
         {this.state.isReader?null:
@@ -192,6 +193,7 @@ class App extends Component {
           .data
           .map(val => (
             <Link
+              className={path===val.pathname?'active':''}
               to={val.pathname}
               onClick={() => {
               this.changeTitle(val.pathname) 
@@ -205,5 +207,4 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+export default withRouter(App);

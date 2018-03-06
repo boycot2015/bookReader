@@ -36,12 +36,13 @@
     margin: 10px 5px;
     padding: 10px 30px;
 }
-.am-button{
+.bottom-button>a.am-button{
     padding: 0 10px;
     height: 36px;
     line-height: 36px;
     font-size: 14px;
     border: 1px solid orange;
+    margin-right: 20%;
 }
 .content .tips{
     padding: 10px;
